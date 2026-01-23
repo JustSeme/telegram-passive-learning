@@ -1,0 +1,36 @@
+{
+  "name": "bot-passive-learning",
+  "version": "1.0.0",
+  "description": "Telegram bot for maintaining theoretical knowledge",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio"
+  },
+  "keywords": ["telegram", "bot", "learning", "education", "typescript"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "telegraf": "^4.15.1",
+    "@prisma/client": "^5.6.0",
+    "openai": "^4.20.1",
+    "node-cron": "^3.0.3",
+    "dotenv": "^16.3.1",
+    "axios": "^1.6.2",
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^4.7.1"
+  },
+  "devDependencies": {
+    "prisma": "^5.6.0",
+    "nodemon": "^3.0.2",
+    "typescript": "^5.2.2",
+    "ts-node": "^10.9.1",
+    "@types/node": "^20.8.7",
+    "@types/node-cron": "^3.0.11"
+  }
+}

@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  telegramId   String   @unique
+  username     String?
+  firstName    String?
+  lastName     String?
+  field        String   // Сфера деятельности
+  frequency    String   @default("1 день") // Частота вопросов
+  isActive     Boolean  @default(true) // Включены ли автоматические вопросы
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  questions    Question[]
+  answers      Answer[]
+
+  @@map("users")
+}
+
+model Question {
+  id          Int      @id @default(autoincrement())
+  telegramId  String
+  type        String   // singleChoice, multiChoice, textInputQuestion
+  question    String
+  options     String?  // JSON для вариантов ответа
+  correctAnswer String // JSON для правильных ответов
+  explanation String
+  field       String   // Сфера, к которой относится вопрос
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime // Когда удалить вопрос (30 дней)
+
+  answers     Answer[]
+
+  @@map("questions")
+}
+
+model Answer {
+  id          Int      @id @default(autoincrement())
+  telegramId  String
+  questionId  Int
+  userAnswer  String   // JSON ответа пользователя
+  isCorrect   Boolean
+  createdAt   DateTime @default(now())
+
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [telegramId], references: [telegramId], onDelete: Cascade)
+
+  @@unique([telegramId, questionId])
+  @@map("answers")
+}
+
+model MessageChain {
+  id          Int      @id @default(autoincrement())
+  telegramId  String
+  questionId  Int?
+  messageIds  String   // JSON с ID сообщений для удаления
+  createdAt   DateTime @default(now())
+  scheduledDeleteAt DateTime // Когда удалить цепочку сообщений
+
+  @@map("message_chains")
+}
