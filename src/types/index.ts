@@ -42,28 +42,13 @@ export interface MessageChain {
   scheduledDeleteAt: Date;
 }
 
-export interface TelegramContext {
-  from: {
-    id: number;
-    username?: string;
-    first_name?: string;
-    last_name?: string;
-  };
-  message?: {
-    text: string;
-    message_id: number;
-  };
-  callbackQuery?: {
-    data: string;
-  };
+import { Context } from 'telegraf';
+
+export interface TelegramContext extends Context {
   session?: {
     currentQuestionId?: number;
     multiAnswers?: number[];
   };
-  reply: (text: string, options?: any) => Promise<any>;
-  editMessageReplyMarkup?: (options?: any) => Promise<any>;
-  answerCbQuery?: () => Promise<any>;
-  db: any;
 }
 
 export enum QuestionType {

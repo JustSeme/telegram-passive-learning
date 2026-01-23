@@ -13,15 +13,13 @@ dotenv.config();
 const bot = new Telegraf(process.env.BOT_TOKEN!);
 
 // Middleware
-bot.use(async (ctx: any, next: any) => {
-  ctx.db = prisma;
-  ctx.logger = logger;
+bot.use(async (ctx: TelegramContext, next: any) => {
   await next();
 });
 
 // Start command
 bot.start(async (ctx: TelegramContext) => {
-  logger.info(`User ${ctx.from.id} started the bot`);
+  logger.info(`User ${ctx.from?.id} started the bot`);
   await userHandlers.handleStart(ctx);
 });
 
@@ -41,26 +39,26 @@ bot.help((ctx: TelegramContext) => {
 
 // Profile command
 bot.command('profile', async (ctx: TelegramContext) => {
-  logger.info(`User ${ctx.from.id} requested profile`);
+  logger.info(`User ${ctx.from?.id} requested profile`);
   await userHandlers.handleProfile(ctx);
 });
 
 // Question command
 bot.command('question', async (ctx: TelegramContext) => {
-  logger.info(`User ${ctx.from.id} requested a question`);
+  logger.info(`User ${ctx.from?.id} requested a question`);
   await questionHandlers.handleGetQuestion(ctx);
 });
 
 // History command
 bot.command('history', async (ctx: TelegramContext) => {
-  logger.info(`User ${ctx.from.id} requested history`);
+  logger.info(`User ${ctx.from?.id} requested history`);
   await userHandlers.handleHistory(ctx);
 });
 
 // Callback query handlers
 bot.on('callback_query', async (ctx: TelegramContext) => {
   const callbackData = ctx.callbackQuery?.data;
-  logger.debug(`User ${ctx.from.id} pressed callback: ${callbackData}`);
+  logger.debug(`User ${ctx.from?.id} pressed callback: ${callbackData}`);
   
   if (callbackData?.startsWith('field_')) {
     await userHandlers.handleFieldSelection(ctx);
@@ -85,7 +83,7 @@ bot.on('callback_query', async (ctx: TelegramContext) => {
 
 // Text message handlers
 bot.on('text', async (ctx: TelegramContext) => {
-  logger.debug(`User ${ctx.from.id} sent text: ${ctx.message?.text?.substring(0, 50)}`);
+  logger.debug(`User ${ctx.from?.id} sent text: ${ctx.message?.text?.substring(0, 50)}`);
   await questionHandlers.handleTextAnswer(ctx);
 });
 

@@ -5,7 +5,7 @@ import { logger } from '../utils/logger';
 import { TelegramContext, Question, QuestionType } from '../types';
 
 async function handleGetQuestion(ctx: TelegramContext): Promise<void> {
-  const telegramId = ctx.from.id.toString();
+  const telegramId = ctx.from!.id.toString();
 
   try {
     const user = await prisma.user.findUnique({
@@ -30,7 +30,7 @@ async function handleGetQuestion(ctx: TelegramContext): Promise<void> {
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 30);
 
-    const question = await prisma.question.create({
+    const result = await prisma.question.create({
       data: {
         telegramId,
         type: questionData.type,
@@ -43,6 +43,8 @@ async function handleGetQuestion(ctx: TelegramContext): Promise<void> {
       }
     });
 
+    const question = result as Question;
+
     logger.info(`Question ${question.id} created for user ${telegramId}`);
     // Send question to user
     await sendQuestion(ctx, question);
@@ -53,7 +55,7 @@ async function handleGetQuestion(ctx: TelegramContext): Promise<void> {
 }
 
 async function sendQuestion(ctx: TelegramContext, question: Question): Promise<void> {
-  const telegramId = ctx.from.id.toString();
+  const telegramId = ctx.from?.id.toString();
   let messageText = `❓ *Вопрос:*\\n\\n${question.question}`;
   let replyMarkup: any = {};
 
