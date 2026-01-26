@@ -5,8 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { Question } from './entities/question.entity';
-import { Context } from 'telegraf';
 import { MessageService } from 'src/message/message.service';
+import { Context } from './interfaces/context.interface';
 
 @Injectable()
 export class TelegramService implements OnModuleInit {
@@ -47,15 +47,17 @@ export class TelegramService implements OnModuleInit {
         user = this.userRepository.create({
           telegramId: telegramUser.id,
           username: telegramUser.username,
-          name: telegramUser.first_name + ' ' + telegramUser.last_name,
+          name: telegramUser.first_name + (telegramUser.last_name ? ` ${telegramUser.last_name}` : ''),
         });
         await this.userRepository.save(user);
+        ctx.user = user;
       }
 
-      const text = await this.messageService.getMessage('welcome')
+      const text = await this.messageService.getMessage('welcome', {
+        name: user.name
+      })
 
-      const message = await ctx.reply(text)
-      console.log(message)
+      await this.messageService.sendAndSave(ctx, text, {})
     });
 
     this.bot.on('message', async (ctx: Context) => {
