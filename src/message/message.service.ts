@@ -52,8 +52,8 @@ export class MessageService {
             await this.messageRepository.save({
                 chatId: ctx.chat.id,
                 messageId: message.message_id,
-                sentAt: new Date(),
-                userId: ctx.user.id
+                userId: ctx.user.id,
+                sentAt: Date.now()
             });
         } catch (err) {
             console.error('Error sending and save message: ', err);

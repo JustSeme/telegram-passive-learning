@@ -15,8 +15,8 @@ export class Message {
   @Column()
   userId: number;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  sentAt: Date;
+  @Column({ type: 'integer' })
+  sentAt: number;
 
   @ManyToOne(() => User)
   @JoinColumn()

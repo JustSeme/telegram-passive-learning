@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TelegrafModule } from 'nestjs-telegraf';
 import { TelegramModule } from './telegram/telegram.module';
 import { User } from './telegram/entities/user.entity';
 import { Question } from './telegram/entities/question.entity';
+import { Message } from './message/entities/message.entity';
 import { MessageModule } from './message/message.module';
 
 @Module({
@@ -15,9 +17,16 @@ import { MessageModule } from './message/message.module';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: process.env.DB_DATABASE || './data/bot.db',
-      entities: [User, Question],
+      entities: [User, Question, Message],
       synchronize: process.env.DB_SYNCHRONIZE === 'true',
       logging: process.env.DB_LOGGING === 'true',
+    }),
+    TelegrafModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        token: configService.get<string>('TELEGRAM_BOT_TOKEN'),
+      }),
+      inject: [ConfigService],
     }),
     TelegramModule,
     MessageModule,
