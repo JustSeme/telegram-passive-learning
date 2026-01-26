@@ -5,7 +5,7 @@ import { Repository } from "typeorm";
 import * as fs from 'fs';
 import * as path from 'path';
 import { MessageParams } from "./interfaces/message-params.interface";
-import { Context } from "src/telegram/interfaces/context.interface";
+import { BotContext } from "src/telegram/interfaces/context.interface";
 import { ExtraReplyMessage } from "telegraf/typings/telegram-types";
 
 @Injectable()
@@ -24,7 +24,7 @@ export class MessageService {
         this.messagesData = JSON.parse(fs.readFileSync(messagesPath, 'utf8'));
     }
 
-    public async getMessage(messageId: string, params: MessageParams, language: string = 'ru') {
+    public async getMessage(messageId: string, params: MessageParams = {}, language: string = 'ru') {
         const message = this.messagesData[messageId];
         if (!message) {
             throw new Error(`Message with id "${messageId}" not found`);
@@ -45,9 +45,9 @@ export class MessageService {
         return localizedMessage;
     }
 
-    public async sendAndSave(ctx: Context, text: string, extra: ExtraReplyMessage) {
+    public async sendAndSave(ctx: BotContext, text: string, extra: ExtraReplyMessage = {}) {
         try {
-            const message = await ctx.reply(text, extra);
+            const message = await ctx.reply(text, { parse_mode: 'Markdown', ...JSON.parse(JSON.stringify(extra)) });
 
             await this.messageRepository.save({
                 chatId: ctx.chat.id,

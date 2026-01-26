@@ -7,6 +7,7 @@ import { User } from './telegram/entities/user.entity';
 import { Question } from './telegram/entities/question.entity';
 import { Message } from './message/entities/message.entity';
 import { MessageModule } from './message/message.module';
+import { session } from 'telegraf';
 
 @Module({
   imports: [
@@ -25,6 +26,9 @@ import { MessageModule } from './message/message.module';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         token: configService.get<string>('TELEGRAM_BOT_TOKEN'),
+        middlewares: [
+          session(),
+        ],
       }),
       inject: [ConfigService],
     }),
@@ -32,6 +36,5 @@ import { MessageModule } from './message/message.module';
     MessageModule,
   ],
   controllers: [],
-  providers: [],
 })
 export class AppModule {}

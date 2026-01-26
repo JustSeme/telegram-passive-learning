@@ -1,6 +1,5 @@
-import { Context as TelegrafContext } from 'telegraf';
+import { Context, Scenes } from 'telegraf';
 
-export interface Context extends TelegrafContext {
+export interface BotContext extends Context, Scenes.SceneContext {
   user?: any;
-  session?: any;
 }

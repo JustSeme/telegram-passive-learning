@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Update, Start, On, Ctx } from 'nestjs-telegraf';
-import { Context } from './interfaces/context.interface';
+import { BotContext } from './interfaces/context.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -16,7 +16,7 @@ export class TelegramUpdate {
   ) {}
 
   @Start()
-  async startCommand(@Ctx() ctx: Context) {
+  async startCommand(@Ctx() ctx: BotContext) {
     const telegramUser = ctx.from;
     if (!telegramUser) return;
 
@@ -32,20 +32,19 @@ export class TelegramUpdate {
         name: telegramUser.first_name + (telegramUser.last_name ? ` ${telegramUser.last_name}` : ''),
       });
       await this.userRepository.save(user);
-      ctx.user = user;
     }
+    ctx.user = user;
 
     const text = await this.messageService.getMessage('welcome', {
       name: user.name
     });
 
-    await this.messageService.sendAndSave(ctx, text, {});
-  }
+    await this.messageService.sendAndSave(ctx, text);
+    await ctx.scene.enter('topic');
+  } 
 
   @On('message')
-  async onMessage(@Ctx() ctx: Context) {
-    await ctx.reply(
-      'I\'m here to help you learn passively! Use /help to see available commands.',
-    );
+  async onMessage(@Ctx() ctx: BotContext) {
+    await this.startCommand(ctx);
   }
 }
