@@ -1,0 +1,11 @@
+
+{
+  "welcome": {
+    "ru": "🚀 Добро пожаловать в BitBrain, {name}! 🦸‍♂️\n\nЯ - твой личный тренер для мозга! Пока ты живешь своей жизнью, я буду тайно прокачивать твой интеллект крутейшими фактами и знаниями.\n\n✨ **Твои преимущества:**\n• Учись без усилий - просто живи!\n• Получай знания в паузах и очередях\n• Становись умнее каждый день на автопилоте\n\n🎯 Погнали в будущее, где ты - ходячая энциклопедия!",
+    "en": "🚀 Welcome to BitBrain, {name}! 🦸‍♂️\n\nI'm your personal brain trainer! While you live your life, I'll secretly upgrade your intelligence with amazing facts and knowledge.\n\n✨ **Your benefits:**\n• Learn effortlessly - just live your life!\n• Get knowledge during breaks and queues\n• Become smarter every day on autopilot\n\n🎯 Let's rock the future where you're a walking encyclopedia!"
+  },
+  "noTopic": {
+    "ru": "🤔 Ой, кажется, мы еще не выбрали тему для обучения! Просто напиши мне название интересующей тебя темы для обучения!",
+    "en": "🤔 Oh, I don't think we've chosen a topic for training yet! Just write me the name of the topic you are interested in!"
+  }
+}
