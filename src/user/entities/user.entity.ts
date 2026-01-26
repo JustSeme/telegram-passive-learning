@@ -1,5 +1,5 @@
+import { Question } from 'src/telegram/entities/question.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
-import { Question } from './question.entity';
 
 @Entity('users')
 export class User {

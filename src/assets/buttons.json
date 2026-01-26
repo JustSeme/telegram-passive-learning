@@ -1,0 +1,44 @@
+{
+    "welcome": {
+        "ru": {
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        { "text": "👤 Профиль", "callback_data": "profile" },
+                        { "text": "🤔 Запросить вопрос", "callback_data": "request_question" }
+                    ]
+                ]
+            }
+        },
+        "en": {
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        { "text": "👤 Profile", "callback_data": "profile" },
+                        { "text": "🤔 Ask question", "callback_data": "request_question" }
+                    ]
+                ]
+            }
+        }
+    },
+    "backToMenu": {
+        "ru": {
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        { "text": "🔙 Вернуться в главное меню", "callback_data": "back_to_menu" }
+                    ]
+                ]
+            }
+        },
+        "en": {
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        { "text": "🔙 Back to menu", "callback_data": "back_to_menu" }
+                    ]
+                ]
+            }
+        }
+    }
+}

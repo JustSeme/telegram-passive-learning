@@ -1,3 +1,3 @@
-export interface MessageParams {
+export interface TemplateParams {
   [key: string]: string | number;
 }

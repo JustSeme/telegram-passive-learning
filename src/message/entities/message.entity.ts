@@ -1,4 +1,4 @@
-import { User } from "src/telegram/entities/user.entity";
+import { User } from "src/user/entities/user.entity";
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 
 @Entity()

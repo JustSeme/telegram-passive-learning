@@ -1,5 +1,5 @@
+import { User } from 'src/user/entities/user.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, Check } from 'typeorm';
-import { User } from './user.entity';
 
 
 export enum QuestionType {

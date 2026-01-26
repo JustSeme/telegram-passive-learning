@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Scene, SceneEnter, Ctx, On, Message } from 'nestjs-telegraf';
 import { BotContext } from '../interfaces/context.interface';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
 import { MessageService } from 'src/message/message.service';
+import { UserService } from 'src/user/user.service';
 
 // Сцена запроса и записи темы обучения
 @Scene('topic')
@@ -12,17 +10,16 @@ import { MessageService } from 'src/message/message.service';
 export class TopicScene {
   constructor(
     private messageService: MessageService,
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
+    private userService: UserService,
   ) {}
 
   @SceneEnter()
   async onSceneEnter(@Ctx() ctx: BotContext) {
     let text = '';
 
-    if(ctx.user?.learningTopic) {
+    if(ctx.session.user?.learningTopic) {
       text = await this.messageService.getMessage('hasTopic', {
-        topic: ctx.user.learningTopic
+        topic: ctx.session.user.learningTopic
       });
     } else {
       text = await this.messageService.getMessage('noTopic');
@@ -44,20 +41,16 @@ export class TopicScene {
     }
 
     try {
-      // Находим и обновляем пользователя
-      const user = await this.userRepository.findOne({
-        where: { telegramId: telegramUserId },
-      });
+      const user = ctx.session.user;
 
       if (user) {
-        ctx.user = user;
         user.learningTopic = topic;
-        await this.userRepository.save(user);
+        await this.userService.updateUser(user);
+        ctx.session.user = user; // Обновляем в сессии
         
         const text = await this.messageService.getMessage('topicSaved', { topic });
         await this.messageService.sendAndSave(ctx, text);
         
-        // Выход из сцены произойдет автоматически после успешного выполнения
         return;
       } else {
         const text = await this.messageService.getMessage('userNotFound');

@@ -27,5 +27,9 @@
   "topicSaveError": {
     "ru": "❌ Произошла ошибка при сохранении темы. Пожалуйста, попробуйте еще раз.",
     "en": "❌ An error occurred while saving the topic. Please try again."
+  },
+  "profileInfo": {
+    "ru": "👤 *Твой профиль BitBrain*\n\n🎯 *Имя:* {name}\n\n🆔 *Telegram ID:* {telegramId}\n\n📚 *Тема обучения:* {learningTopic}\n\n📅 *Дата регистрации:* {createdAt}\n\n💪 Продолжай прокачивать свой мозг каждый день!",
+    "en": "👤 *Your BitBrain Profile*\n\n🎯 *Name:* {name}\n\n🆔 *Telegram ID:* {telegramId}\n\n📚 *Learning Topic:* {learningTopic}\n\n📅 *Registration Date:* {createdAt}\n\n💪 Keep training your brain every day!"
   }
 }

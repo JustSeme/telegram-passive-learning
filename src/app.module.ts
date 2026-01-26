@@ -3,11 +3,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TelegrafModule } from 'nestjs-telegraf';
 import { TelegramModule } from './telegram/telegram.module';
-import { User } from './telegram/entities/user.entity';
 import { Question } from './telegram/entities/question.entity';
 import { Message } from './message/entities/message.entity';
 import { MessageModule } from './message/message.module';
 import { session } from 'telegraf';
+import { User } from './user/entities/user.entity';
+import { userMiddleware } from './telegram/middlewares/user.middleware';
+import { UserService } from './user/user.service';
 
 @Module({
   imports: [
@@ -23,14 +25,15 @@ import { session } from 'telegraf';
       logging: process.env.DB_LOGGING === 'true',
     }),
     TelegrafModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
+      imports: [ConfigModule, TelegramModule],
+      useFactory: (configService: ConfigService, userService: UserService) => ({
         token: configService.get<string>('TELEGRAM_BOT_TOKEN'),
         middlewares: [
           session(),
+          userMiddleware(userService),
         ],
       }),
-      inject: [ConfigService],
+      inject: [ConfigService, UserService],
     }),
     TelegramModule,
     MessageModule,
