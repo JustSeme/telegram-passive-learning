@@ -2,8 +2,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TelegramModule } from './telegram/telegram.module';
-import { User } from './entities/user.entity';
-import { Question } from './entities/question.entity';
+import { User } from './telegram/entities/user.entity';
+import { Question } from './telegram/entities/question.entity';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { Question } from './entities/question.entity';
       logging: process.env.DB_LOGGING === 'true',
     }),
     TelegramModule,
+    MessageModule,
   ],
   controllers: [],
   providers: [],

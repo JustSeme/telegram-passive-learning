@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, Check } from 'typeorm';
 import { User } from './user.entity';
 
 
@@ -19,7 +19,8 @@ export class Question {
   @ManyToOne(() => User, (user) => user.questions)
   user: User;
 
-  @Column({ type: 'enum', enum: QuestionType, nullable: false })
+  @Column({ type: 'text', nullable: false })
+  @Check('type IN (\'' + Object.values(QuestionType).join('\', \'') + '\')')
   type: QuestionType;
 
   @Column({ nullable: false })

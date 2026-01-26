@@ -3,10 +3,10 @@ import { Telegraf } from 'telegraf';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
-import { Question } from '../entities/question.entity';
+import { User } from './entities/user.entity';
+import { Question } from './entities/question.entity';
 import { Context } from 'telegraf';
-import { Message } from 'src/entities/message.entity';
+import { MessageService } from 'src/message/message.service';
 
 @Injectable()
 export class TelegramService implements OnModuleInit {
@@ -14,12 +14,11 @@ export class TelegramService implements OnModuleInit {
 
   constructor(
     private configService: ConfigService,
+    private messageService: MessageService,
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(Question)
     private questionRepository: Repository<Question>,
-    @InjectRepository(Message)
-    private messageRepository: Repository<Message>,
   ) {
     const token = this.configService.get<string>('TELEGRAM_BOT_TOKEN');
     if (!token) {
@@ -53,7 +52,10 @@ export class TelegramService implements OnModuleInit {
         await this.userRepository.save(user);
       }
 
-      
+      const text = await this.messageService.getMessage('welcome')
+
+      const message = await ctx.reply(text)
+      console.log(message)
     });
 
     this.bot.on('message', async (ctx: Context) => {
