@@ -8,12 +8,14 @@ import { UserModule } from 'src/user/user.module';
 import { TopicScene } from './scenes/topic.scene';
 import { ProfileScene } from './scenes/profile.scene';
 import { QuestionScene } from './scenes/question.scene';
+import { LlmModule } from 'src/llm/llm.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Question]),
     MessageModule,
     UserModule,
+    LlmModule,
   ],
   providers: [TelegramUpdate, TopicScene, ProfileScene, QuestionScene],
   controllers: [TelegramController],
