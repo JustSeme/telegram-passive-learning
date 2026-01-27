@@ -21,6 +21,28 @@
             }
         }
     },
+    "profile": {
+        "ru": {
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        { "text": "🔙 Вернуться в главное меню", "callback_data": "back_to_menu" },
+                        { "text": "📚 Выбрать тему обучения", "callback_data": "update_learning_topic" }
+                    ]
+                ]
+            }
+        },
+        "en": {
+            "reply_markup": {
+                "inline_keyboard": [
+                    [
+                        { "text": "🔙 Back to menu", "callback_data": "back_to_menu" },
+                        { "text": "📚 Choose learning topic", "callback_data": "update_learning_topic" }
+                    ]
+                ]
+            }
+        }
+    },
     "backToMenu": {
         "ru": {
             "reply_markup": {

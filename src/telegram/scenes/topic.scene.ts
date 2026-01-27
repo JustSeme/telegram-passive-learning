@@ -25,18 +25,16 @@ export class TopicScene {
       text = await this.messageService.getMessage('noTopic');
     }
       
-    await this.messageService.sendAndSave(ctx, text);
+    await this.messageService.editOrSendAndSave(ctx, text);
   }
 
   @On('message')
   async onMessage(@Ctx() ctx: BotContext, @Message('text') text: string) {
-    const telegramUserId = ctx.from.id
-
     const topic = text.trim();
     
     if (topic.length <= 2 || topic.length >= 50) {
       const text = await this.messageService.getMessage('topicLengthError');
-      await this.messageService.sendAndSave(ctx, text);
+      await this.messageService.editOrSendAndSave(ctx, text);
       return;
     }
 
@@ -49,18 +47,18 @@ export class TopicScene {
         ctx.session.user = user; // Обновляем в сессии
         
         const text = await this.messageService.getMessage('topicSaved', { topic });
-        await this.messageService.sendAndSave(ctx, text);
+        await this.messageService.editOrSendAndSave(ctx, text);
         
         return;
       } else {
         const text = await this.messageService.getMessage('userNotFound');
-        await this.messageService.sendAndSave(ctx, text);
+        await this.messageService.editOrSendAndSave(ctx, text);
         return;
       }
     } catch (error) {
       console.error('Error saving learning topic:', error);
       const text = await this.messageService.getMessage('topicSaveError');
-      await this.messageService.sendAndSave(ctx, text);
+      await this.messageService.editOrSendAndSave(ctx, text);
       return;
     }
   }

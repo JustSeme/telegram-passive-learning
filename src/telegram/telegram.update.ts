@@ -21,7 +21,7 @@ export class TelegramUpdate {
 
     const keyboard = await this.messageService.getButton('welcome')
 
-    await this.messageService.sendAndSave(ctx, text, keyboard);
+    await this.messageService.editOrSendAndSave(ctx, text, keyboard);
   } 
 
   @On('message')

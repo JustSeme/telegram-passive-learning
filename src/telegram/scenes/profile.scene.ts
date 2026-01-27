@@ -19,7 +19,7 @@ export class ProfileScene {
     
     if (!user) {
       const text = await this.messageService.getMessage('userNotFound');
-      await this.messageService.sendAndSave(ctx, text);
+      await this.messageService.editOrSendAndSave(ctx, text);
       return;
     }
 
@@ -33,9 +33,9 @@ export class ProfileScene {
       createdAt
     });
 
-    const keyboard = await this.messageService.getButton('backToMenu');
+    const keyboard = await this.messageService.getButton('profile');
 
-    await this.messageService.sendAndSave(ctx, text, keyboard);
+    await this.messageService.editOrSendAndSave(ctx, text, keyboard);
   }
 
   @On('callback_query')
@@ -45,6 +45,9 @@ export class ProfileScene {
     switch(callbackData) {
       case 'back_to_menu':
         await ctx.scene.leave();
+        break;
+      case 'update_learning_topic':
+        await ctx.scene.enter('topic')
         break;
     }
   }

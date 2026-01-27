@@ -18,7 +18,7 @@ export class QuestionScene {
     
     if (!user) {
       const text = await this.messageService.getMessage('userNotFound');
-      await this.messageService.sendAndSave(ctx, text);
+      await this.messageService.editOrSendAndSave(ctx, text);
       return;
     }
 
@@ -31,7 +31,7 @@ export class QuestionScene {
     
     const questionKeyboard = await this.messageService.getButton('backToMenu');
 
-    await this.messageService.sendAndSave(ctx, questionText, questionKeyboard);
+    await this.messageService.editOrSendAndSave(ctx, questionText, questionKeyboard);
   }
 
   @On('callback_query')

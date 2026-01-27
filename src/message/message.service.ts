@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Message } from "./entities/message.entity";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import * as fs from 'fs';
 import * as path from 'path';
 import { TemplateParams } from "./interfaces/template-params.interface";
@@ -73,7 +73,7 @@ export class MessageService {
         return localizedButton;
     }
 
-    public async sendAndSave(ctx: BotContext, text: string, extra: ExtraReplyMessage = {}) {
+    private async sendAndSave(ctx: BotContext, text: string, extra: ExtraReplyMessage = {}) {
         try {
             const message = await ctx.reply(text, { parse_mode: 'Markdown', ...JSON.parse(JSON.stringify(extra)) });
 
@@ -88,5 +88,50 @@ export class MessageService {
             throw err;
         }
         return
+    }
+
+    public findUserMessages(chatId: number, userId: number): Promise<Message[] | []> {
+        return this.messageRepository.find({
+            where: { chatId, userId },
+            order: { sentAt: 'DESC' }
+        });
+    }
+
+    public async editOrSendAndSave(ctx: BotContext, text: string, extra: ExtraReplyMessage = {}): Promise<void> {
+        try {
+            const user = ctx.session.user;
+            if (!user) {
+                await this.sendAndSave(ctx, text, extra);
+                return;
+            }
+
+            const userMessages = await this.findUserMessages(ctx.chat.id, user.id);
+            const lastMessage = userMessages.at(0)
+            userMessages.shift();
+            
+            // Delete old messages
+            await this.messageRepository.delete({ id: In(userMessages.map((m: Message) => m.id)) });
+            await Promise.all(userMessages.map((um: Message) => ctx.telegram.deleteMessage(ctx.chat.id, um.messageId)));
+            
+            if (lastMessage) {
+                try {
+                    await ctx.telegram.editMessageText(
+                        ctx.chat.id,
+                        lastMessage.messageId,
+                        undefined,
+                        text,
+                        { parse_mode: 'Markdown', ...JSON.parse(JSON.stringify(extra)) }
+                    );
+                } catch (editError) {
+                    console.warn('Failed to edit message, sending new one:', editError);
+                    await this.sendAndSave(ctx, text, extra);
+                }
+            } else {
+                await this.sendAndSave(ctx, text, extra);
+            }
+        } catch (err) {
+            console.error('Error in editOrSend:', err);
+            throw err;
+        }
     }
 }
