@@ -31,5 +31,9 @@
   "profileInfo": {
     "ru": "👤 *Твой профиль BitBrain*\n\n🎯 *Имя:* {name}\n\n🆔 *Telegram ID:* {telegramId}\n\n📚 *Тема обучения:* {learningTopic}\n\n📅 *Дата регистрации:* {createdAt}\n\n💪 Продолжай прокачивать свой мозг каждый день!",
     "en": "👤 *Your BitBrain Profile*\n\n🎯 *Name:* {name}\n\n🆔 *Telegram ID:* {telegramId}\n\n📚 *Learning Topic:* {learningTopic}\n\n📅 *Registration Date:* {createdAt}\n\n💪 Keep training your brain every day!"
+  },
+  "questionNotFound": {
+    "ru": "❌ Ошибка: вопрос не найден. Пожалуйста, используйте команду /start для регистрации.",
+    "en": "❌ Error: question not found. Please use the /start command to register."
   }
 }

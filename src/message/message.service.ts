@@ -52,7 +52,7 @@ export class MessageService {
         return localizedMessage;
     }
 
-     public async getButton(buttonId: string, params: TemplateParams = {}, language: string = 'ru') {
+    public async getButton(buttonId: string, params: TemplateParams = {}, language: string = 'ru') {
         const button = this.buttonsData[buttonId];
         if (!button) {
             throw new Error(`Button with id "${buttonId}" not found`);
@@ -71,6 +71,10 @@ export class MessageService {
         }
         
         return localizedButton;
+    }
+
+    public async getAnswerButtons(options: string[]) {
+        return options.map((o, i) => [{text: o, callback_data: i}])
     }
 
     private async sendAndSave(ctx: BotContext, text: string, extra: ExtraReplyMessage = {}) {

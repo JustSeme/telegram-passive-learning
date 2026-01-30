@@ -9,13 +9,15 @@ export const SingleChoiceQuestionSchema = z.object({
     .max(200, 'Option must not exceed 200 characters')
   ).min(4, 'At least 4 options required')
    .max(6, 'Maximum 6 options allowed'),
-  correctAnswer: z.string()
+  correctAnswers: z.array(z.string()
     .min(1, 'Correct answer cannot be empty')
-    .max(200, 'Correct answer must not exceed 200 characters'),
+    .max(200, 'Correct answer must not exceed 200 characters')
+  ).min(1, 'At least 1 correct answer required')
+   .max(1, 'Maximum 1 correct answer allowed'),
   explanation: z.string()
     .min(10, 'Explanation must be at least 10 characters')
     .max(1000, 'Explanation must not exceed 1000 characters'),
-}).refine(data => data.options.includes(data.correctAnswer), {
+}).refine(data => data.options.includes(data.correctAnswers.at(0)), {
   message: 'Correct answer must be one of the options',
   path: ['correctAnswer'],
 });

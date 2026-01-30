@@ -52,7 +52,8 @@ export class TopicScene {
         ctx.session.user = user;
         
         const text = await this.messageService.getMessage('topicSaved', { topic });
-        await this.messageService.editOrSendAndSave(ctx, text);
+        const keyboard = await this.messageService.getButton('backToMenu');
+        await this.messageService.editOrSendAndSave(ctx, text, keyboard);
         
         return;
       } else {

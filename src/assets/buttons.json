@@ -4,8 +4,8 @@
             "reply_markup": {
                 "inline_keyboard": [
                     [
-                        { "text": "👤 Профиль", "callback_data": "profile" },
-                        { "text": "🤔 Запросить вопрос", "callback_data": "request_question" }
+                        { "text": "🤔 Запросить вопрос", "callback_data": "request_question" },
+                        { "text": "👤 Профиль", "callback_data": "profile" }
                     ]
                 ]
             }
@@ -14,8 +14,8 @@
             "reply_markup": {
                 "inline_keyboard": [
                     [
-                        { "text": "👤 Profile", "callback_data": "profile" },
-                        { "text": "🤔 Ask question", "callback_data": "request_question" }
+                        { "text": "🤔 Ask question", "callback_data": "request_question" },
+                        { "text": "👤 Profile", "callback_data": "profile" }
                     ]
                 ]
             }

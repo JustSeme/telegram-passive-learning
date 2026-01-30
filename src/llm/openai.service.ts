@@ -37,7 +37,7 @@ export class OpenAIService implements OnModuleInit {
     return questionTypes.at(randomQuestionIndex);
   }
 
-  public async generateQuestion(learningTopic: string, language: string = 'ru') {
+  public async generateQuestion(learningTopic: string, language: string = 'ru'): Promise<(MultiChoiceQuestion | SingleChoiceQuestion | TextInputQuestion) & { type: QuestionType }> {
     const questionType = this.getRandomQuestionType();
     
     const systemPrompt = `You are a highly experienced specialist in the field of "${learningTopic}". After many years of work, you have become a professor at a reputable university in the field of "${learningTopic}". You communicate with your students with great enthusiasm and motivate them.`
@@ -58,7 +58,9 @@ export class OpenAIService implements OnModuleInit {
         break;
       }
     }
+
+    // TODO Проверять, что вообще в response и, если там пусто - делать повторный запрос
     
-    return response;
+    return { ...response, type: questionType };
   }
 }

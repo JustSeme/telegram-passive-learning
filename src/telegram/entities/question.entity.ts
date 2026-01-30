@@ -30,10 +30,10 @@ export class Question {
   content: string;
 
   @Column({ nullable: true })
-  answer: string;
+  answered: string;
 
   @Column({ nullable: false })
-  correctAnswer: string;
+  correctAnswers: string;
 
   @Column({ nullable: false, type: 'boolean', default: false })
   isCorrect: boolean;
